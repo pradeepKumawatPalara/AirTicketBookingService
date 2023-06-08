@@ -9,22 +9,25 @@ const bookingService = new BookingService();
 
 class BookingController {
 
-    constructor() {
-    }
+    constructor() {}
 
-    async sendMessageToQueue(req, res){
+    async sendMessageToQueue(req, res) {
         const channel = await createChannel();
-        const data = {message: 'Success'};
+        const data = { message: 'Success' };
+        console.log("data")
+        console.log(req.body)
+
         publishMessage(channel, REMINDER_BINDING_KEY, JSON.stringify(data));
         return res.status(200).json({
             message: 'Succesfully published the event'
         });
     }
 
-    async create (req, res) {
+    async create(req, res) {
         try {
+
             const response = await bookingService.createBooking(req.body);
-            console.log("FROM BOOKING CONTROLLER", response);
+
             return res.status(StatusCodes.OK).json({
                 message: 'Successfully completed booking',
                 success: true,
